@@ -1,5 +1,5 @@
 #Author: Pherr <pherr@pherr.net>
-#License: GNU GPL v3 <www.gnu.org/licenses/gpl.html>
+#License: MIT License <http://opensource.org/licenses/MIT>
 
 import urllib2, urllib,  os, sys, json
 from anki.hooks import wrap
