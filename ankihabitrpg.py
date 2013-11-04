@@ -11,6 +11,7 @@ config ={}
 rate = 5
 correct_answers = 0
 active = False
+url = 'https://habitrpg.com/api/v1/user/task/Anki/up'
 
 configpath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "habitrpg.config")
 configpath = configpath.decode(sys.getfilesystemencoding())
@@ -23,7 +24,7 @@ def card_answered(self, ease):  # Cache number of correct answers
 def habit_sync(x):              # Call API once for every correct answer during Ankiweb sync
     if active == True:
         while correct_answers >= rate:
-            urllib2.urlopen(Syncer.url,urllib.urlencode(Syncer.headers))
+            urllib2.urlopen(url,urllib.urlencode(Syncer.headers))
             correct_answers -= rate
         config['score'] = correct_answers
         json.dump( config, open( configpath, 'w' ) )
@@ -39,8 +40,7 @@ def setup():
             config = {'token' : api_token, 'user' : user_id, 'score' : correct_answers}
             json.dump( config, open( configpath, 'w' ) )
             active = True
-            Syncer.url = 'https://habitrpg.com/api/v1/user/task/Anki/up'
-            Syncer.headers = {"x-api-key":api_token, "x-api-user"}
+            Syncer.headers = {"x-api-key":api_token, "x-api-user":user_id}
             utils.showInfo("The add-on has been setup.")
 
 
@@ -49,8 +49,7 @@ if os.path.exists(configpath):    # Load config file
     api_token = config['token']
     user_id = config['user']
     correct_answers = config['score']
-    Syncer.url = 'https://habitrpg.com/api/v1/user/task/Anki/up'
-    Syncer.headers = {"x-api-key":api_token, "x-api-user"}
+    Syncer.headers = {"x-api-key":api_token, "x-api-user":user_id}
     active = True
 
 
